@@ -22,8 +22,10 @@ if (tipoConversion != 0) {
 function calculadora(tipoConversion, valorDolarHoy, importe) {
     if (tipoConversion == 1) {
         alert('Hoy, u$' + importe + ' son $' + importe * valorDolarHoy);
+        alert('Te esperamos la proxima');
     } else if (tipoConversion == 2) {
         alert('Hoy, $' + importe + ' son u$' + importe / valorDolarHoy);
+        alert('Te esperamos la proxima');
     }
 }
 calculadora(tipoConversion, valorDolarHoy, importe);
