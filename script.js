@@ -122,16 +122,19 @@ let alumnos = [
 ];
 
 console.log(alumnos.legajo);
+let nombre;
+do {
+    nombre = prompt('Ingresa tu nombre').toUpperCase();
+} while (!nombre || !isNaN(nombre));
 
-let nombre = prompt('Ingresa tu nombre').toUpperCase();
-let menu;
 let legajoNuevo = 1010;
 
+let menu;
 do {
     menu = prompt(
         'BIENVENIDO/A ' +
             nombre +
-            '\n\nElegí una opción:\n1) Ver lista de alumnos\n2) Ingresar alumno nuevo\n3) Cargar notas\n4) Ver nota promedio y estado\n5) Estado de alumnos\n0) Salir'
+            '\n\nElegí una opción:\n1) Ver lista de alumnos\n2) Ingresar alumno nuevo\n3) Cargar notas\n4) Ver nota promedio y estado\n5) Filtrar por estado de alumnos\n0) Salir'
     );
     if (menu == 1) {
         alert(lista(alumnos));
@@ -148,7 +151,7 @@ do {
     if (menu == 5) {
         alert(estadoAlumnos(alumnos));
     }
-} while (menu != 0);
+} while (menu != 0 || !menu);
 
 function lista(arrayIngresado) {
     let listado = 'Legajo - Nombre y Apellido\n\n';
@@ -159,7 +162,7 @@ function lista(arrayIngresado) {
 }
 
 function listaPromediosYEstado(arrayIngresado) {
-    let listado = 'Legajo - Nombre y Apellido - Promedio\n\n';
+    let listado = 'Legajo - Nombre y Apellido - Promedio - Estado\n\n';
     arrayIngresado.forEach((elemento) => {
         if (elemento.promedio == null) {
             listado =
@@ -194,9 +197,18 @@ function listaPromediosYEstado(arrayIngresado) {
 
 function nuevoAlumno() {
     let legajo = legajoNuevo + 1;
-    let nombre = prompt('Ingrese nombre del alumno');
-    let apellido = prompt('Ingrese apellido del alumno');
-    let dni = Number(prompt('Ingrese DNI del alumno'));
+    let nombre;
+    do {
+        nombre = prompt('Ingrese nombre del alumno');
+    } while (!isNaN(nombre) || !nombre);
+    let apellido;
+    do {
+        apellido = prompt('Ingrese apellido del alumno');
+    } while (!isNaN(apellido) || !apellido);
+    let dni;
+    do {
+        dni = prompt('Ingrese DNI del alumno');
+    } while (isNaN(dni) || !dni);
     let matematicas = null;
     let lengua = null;
     let sociales = null;
@@ -211,13 +223,27 @@ function nuevoAlumno() {
 
 function cargarNota() {
     let legajoElegido = prompt('CARGAR NOTAS\nElegi nro de legajo:\n\n' + lista(alumnos));
-
     const alumnoNotas = alumnos.find((alumno) => alumno.legajo == legajoElegido);
 
-    let matematicas = Number(prompt('Ingrese nota de matematicas'));
-    let lengua = Number(prompt('Ingrese nota de lenguas'));
-    let sociales = Number(prompt('Ingrese nota de sociales'));
-    let naturales = Number(prompt('Ingrese nota de naturales'));
+    let matematicas;
+    do {
+        matematicas = Number(prompt('Ingrese nota de matematicas'));
+    } while (isNaN(matematicas) || !matematicas);
+
+    let lengua;
+    do {
+        lengua = Number(prompt('Ingrese nota de lenguas'));
+    } while (isNaN(lengua) || !lengua);
+
+    let sociales;
+    do {
+        sociales = Number(prompt('Ingrese nota de sociales'));
+    } while (isNaN(sociales) || !sociales);
+
+    let naturales;
+    do {
+        naturales = Number(prompt('Ingrese nota de naturales'));
+    } while (isNaN(naturales) || !naturales);
 
     alumnoNotas.matematicas = matematicas;
     alumnoNotas.lengua = lengua;
@@ -233,22 +259,26 @@ function cargarNota() {
 }
 
 function estadoAlumnos(arrayIngresado) {
-    let opcion = Number(prompt('ESTADOS\nElija:\n\n1) REGULAR\n2) LIBRE'));
     let listado = 'Legajo - Nombre y Apellido - Promedio\n\n';
-
-    if (opcion == 1) {
-        const filtroEstado = arrayIngresado.filter((elemento) => elemento.estado == 'REGULAR');
-        filtroEstado.forEach((elemento1) => {
-            listado = listado + elemento1.legajo + ' - ' + elemento1.nombre + ' ' + elemento1.apellido + ' - ' + elemento1.estado + '\n';
-        });
-        return listado;
-    } else if (opcion == 2) {
-        const filtroEstado = arrayIngresado.filter((elemento) => elemento.estado == 'LIBRE');
-        filtroEstado.forEach((elemento1) => {
-            listado = listado + elemento1.legajo + ' - ' + elemento1.nombre + ' ' + elemento1.apellido + ' - ' + elemento1.estado + '\n';
-        });
-        return listado;
-    }
+    let opcion;
+    do {
+        opcion = Number(prompt('ESTADOS\nElija el filtro:\n\n1) REGULAR\n2) LIBRE'));
+        if (opcion == 1) {
+            const filtroEstado = arrayIngresado.filter((elemento) => elemento.estado == 'REGULAR');
+            filtroEstado.forEach((elemento1) => {
+                listado =
+                    listado + elemento1.legajo + ' - ' + elemento1.nombre + ' ' + elemento1.apellido + ' - ' + elemento1.estado + '\n';
+            });
+            return listado;
+        } else if (opcion == 2) {
+            const filtroEstado = arrayIngresado.filter((elemento) => elemento.estado == 'LIBRE');
+            filtroEstado.forEach((elemento1) => {
+                listado =
+                    listado + elemento1.legajo + ' - ' + elemento1.nombre + ' ' + elemento1.apellido + ' - ' + elemento1.estado + '\n';
+            });
+            return listado;
+        }
+    } while (opcion != 1 || opcion != 2 || !opcion);
 }
 
 console.log(alumnos);
